@@ -56,7 +56,10 @@ export default {
   },
 
   // Server middleware for development only
-  serverMiddleware: process.env.NODE_ENV === 'production' ? [] : [
+  serverMiddleware: [
     { path: '/api', handler: '~/server/index.js' }
   ]
+  // serverMiddleware: process.env.NODE_ENV === 'production' ? [] : [
+  //   { path: '/api', handler: '~/server/index.js' }
+  // ]
 }
