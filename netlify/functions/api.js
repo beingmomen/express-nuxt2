@@ -25,31 +25,19 @@ app.use((req, res, next) => {
   next();
 });
 
-// Enable CORS
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
-
-// Routes
-app.use('/categories', categoriesRouter);
-app.use('/products', productsRouter);
+// Import routes
+const categoriesRouter = require('../../server/routes/categories');
+const productsRouter = require('../../server/routes/products');
 
 // Test route
 app.get('/', (req, res) => {
   res.json({ message: 'API is working!' });
 });
 
-// Import and use routes
-const categoriesRouter = require('../../server/routes/categories');
-const productsRouter = require('../../server/routes/products');
-
-// Use routes (without /api prefix)
+// Mount routes
 app.use('/categories', categoriesRouter);
 app.use('/products', productsRouter);
 
-// Error handler
 // Error handling
 app.use((err, req, res, next) => {
   console.error(err);

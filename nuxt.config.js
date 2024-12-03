@@ -40,7 +40,9 @@ export default {
 
   // Axios module configuration
   axios: {
-    baseURL: '/.netlify/functions/api'
+    baseURL: process.env.NODE_ENV === 'production'
+      ? '/.netlify/functions/api'
+      : 'http://localhost:3000/api'
   },
 
   // Build Configuration
@@ -53,13 +55,5 @@ export default {
   // Server middleware for development only
   serverMiddleware: process.env.NODE_ENV === 'production' ? [] : [
     { path: '/api', handler: '~/server/index.js' }
-  ],
-  // Public runtime config
-  publicRuntimeConfig: {
-    axios: {
-      browserBaseURL: process.env.NODE_ENV === 'production'
-        ? '/.netlify/functions/api'
-        : 'http://localhost:3000/api'
-    }
-  }
+  ]
 }
