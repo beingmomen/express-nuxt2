@@ -40,10 +40,13 @@ export default {
 
   // Axios module configuration
   axios: {
-    baseURL: process.env.NODE_ENV === 'production'
-      ? '/.netlify/functions/api'
-      : 'http://localhost:3000/api'
+    baseURL: '/api'
   },
+  // axios: {
+  //   baseURL: process.env.NODE_ENV === 'production'
+  //     ? '/.netlify/functions/api'
+  //     : 'http://localhost:3000/api'
+  // },
 
   // Build Configuration
   build: {
