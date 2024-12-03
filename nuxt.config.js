@@ -19,9 +19,7 @@ export default {
   },
 
   // Global CSS
-  css: [
-    '@/assets/css/main.css'
-  ],
+  css: [],
 
   // Plugins to run before rendering page
   plugins: [],
@@ -29,46 +27,32 @@ export default {
   // Auto import components
   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
+  // Modules for dev and build
   buildModules: [
     '@nuxtjs/tailwindcss'
   ],
 
-  // Modules: https://go.nuxtjs.dev/config-modules
+  // Modules
   modules: [
     '@nuxtjs/axios'
   ],
 
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
+  // Axios module configuration
   axios: {
-    baseURL: process.env.NODE_ENV === 'production' 
-      ? 'https://express-nuxt-2.netlify.app/.netlify/functions/api'
+    baseURL: process.env.NODE_ENV === 'production'
+      ? 'https://express-nuxt-2.netlify.app/api'
       : 'http://localhost:3000/api'
   },
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
+  // Build Configuration
   build: {
     transpile: [
       'defu'
     ]
   },
 
-  // Server Middleware
+  // Server middleware for development only
   serverMiddleware: process.env.NODE_ENV === 'production' ? [] : [
     { path: '/api', handler: '~/server/index.js' }
-  ],
-
-  // Public runtime config
-  publicRuntimeConfig: {
-    axios: {
-      browserBaseURL: process.env.BROWSER_BASE_URL
-    }
-  },
-
-  // Private runtime config
-  privateRuntimeConfig: {
-    axios: {
-      baseURL: process.env.BASE_URL
-    }
-  }
+  ]
 }
