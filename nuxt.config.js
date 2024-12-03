@@ -42,7 +42,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: process.env.NODE_ENV === 'production' 
-      ? 'https://express-nuxt-2.netlify.app/api'
+      ? 'https://express-nuxt-2.netlify.app/.netlify/functions/api'
       : 'http://localhost:3000/api'
   },
 
