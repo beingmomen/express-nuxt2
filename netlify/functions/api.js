@@ -4,42 +4,45 @@ const mongoose = require('mongoose');
 const app = express();
 
 // MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/ecommerce';
-mongoose.connect(MONGODB_URI)
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log('MongoDB Error:', err));
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// CORS headers
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  next();
+});
 
 // Import routes
 const categoriesRouter = require('../../server/routes/categories');
 const productsRouter = require('../../server/routes/products');
 
-// Base path for serverless function
-const router = express.Router();
-router.get('/', (req, res) => {
+// Routes
+app.use('/categories', categoriesRouter);
+app.use('/products', productsRouter);
+
+// Test route
+app.get('/', (req, res) => {
   res.json({ message: 'API is working!' });
 });
 
-// Mount routes on router
-router.use('/categories', categoriesRouter);
-router.use('/products', productsRouter);
-
-// Mount router on app with base path
-app.use('/.netlify/functions/api', router);
-
 // Error handling
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error(err);
   res.status(500).json({ error: err.message });
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: 'Not found' });
-});
-
-// Export handler
-const handler = serverless(app);
-module.exports = { handler };
+// Export the serverless function
+exports.handler = serverless(app);

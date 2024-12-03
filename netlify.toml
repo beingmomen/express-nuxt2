@@ -7,12 +7,17 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
   external_node_modules = ["express", "mongoose"]
+  included_files = ["server/routes/**"]
+
+[[redirects]]
+  from = "/.netlify/functions/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
 
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api/:splat"
   status = 200
-  force = true
 
 [[redirects]]
   from = "/*"
