@@ -1,4 +1,5 @@
 const express = require('express')
+const serverless = require('serverless-http')
 const mongoose = require('mongoose')
 const app = express()
 
@@ -16,14 +17,9 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Middleware
 app.use(express.json())
 
-// Test route
-app.get('/', (req, res) => {
-  res.json({ message: 'API is working!' })
-})
-
 // Routes
-app.use('/categories', require('./routes/categories'))
-app.use('/products', require('./routes/products'))
+app.use('/.netlify/functions/api/categories', require('../../server/routes/categories'))
+app.use('/.netlify/functions/api/products', require('../../server/routes/products'))
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -36,13 +32,5 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Not found' })
 })
 
-// Export express app
-module.exports = app
-
-// Start standalone server if directly running
-if (require.main === module) {
-  const port = process.env.PORT || 3000
-  app.listen(port, () => {
-    console.log(`API server listening on port ${port}`)
-  })
-}
+// Export handler for serverless
+exports.handler = serverless(app)
