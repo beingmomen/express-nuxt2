@@ -18,8 +18,8 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.use(express.json())
 
 // Routes
-app.use('/.netlify/functions/api/categories', require('../../server/routes/categories'))
-app.use('/.netlify/functions/api/products', require('../../server/routes/products'))
+app.use('/categories', require('../../server/routes/categories'))
+app.use('/products', require('../../server/routes/products'))
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -33,4 +33,4 @@ app.use((req, res) => {
 })
 
 // Export handler for serverless
-exports.handler = serverless(app)
+module.exports.handler = serverless(app)

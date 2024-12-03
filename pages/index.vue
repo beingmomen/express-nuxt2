@@ -46,8 +46,8 @@ export default {
       this.loading = true
       this.error = null
       const [categoriesRes, productsRes] = await Promise.all([
-        this.$axios.$get('/api/categories'),
-        this.$axios.$get('/api/products')
+        this.$axios.$get('/categories'),
+        this.$axios.$get('/products')
       ])
       this.categories = categoriesRes
       this.products = productsRes

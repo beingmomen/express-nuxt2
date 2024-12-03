@@ -38,7 +38,9 @@ export default {
 
   // Axios module configuration
   axios: {
-    baseURL: '/api'
+    baseURL: process.env.NODE_ENV === 'production' 
+      ? 'https://express-nuxt-2.netlify.app/api'
+      : 'http://localhost:3000/api'
   },
 
   // Server middleware
