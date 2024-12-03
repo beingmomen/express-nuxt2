@@ -7,12 +7,23 @@ const app = express();
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB Connected'))
-.catch(err => console.log(err));
+}).then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log('MongoDB Error:', err));
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// CORS headers
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  next();
+});
 
 // Enable CORS
 app.use((req, res, next) => {
@@ -20,6 +31,10 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
+
+// Routes
+app.use('/categories', categoriesRouter);
+app.use('/products', productsRouter);
 
 // Test route
 app.get('/', (req, res) => {
@@ -35,10 +50,11 @@ app.use('/categories', categoriesRouter);
 app.use('/products', productsRouter);
 
 // Error handler
+// Error handling
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error(err);
   res.status(500).json({ error: err.message });
 });
 
-// Export the handler
-module.exports.handler = serverless(app);
+// Export the serverless function
+exports.handler = serverless(app);

@@ -1,6 +1,7 @@
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
+  ssr: false,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -39,9 +40,7 @@ export default {
 
   // Axios module configuration
   axios: {
-    baseURL: process.env.NODE_ENV === 'production'
-      ? 'https://express-nuxt-2.netlify.app/api'
-      : 'http://localhost:3000/api'
+    baseURL: '/.netlify/functions/api'
   },
 
   // Build Configuration
@@ -54,5 +53,13 @@ export default {
   // Server middleware for development only
   serverMiddleware: process.env.NODE_ENV === 'production' ? [] : [
     { path: '/api', handler: '~/server/index.js' }
-  ]
+  ],
+  // Public runtime config
+  publicRuntimeConfig: {
+    axios: {
+      browserBaseURL: process.env.NODE_ENV === 'production'
+        ? '/.netlify/functions/api'
+        : 'http://localhost:3000/api'
+    }
+  }
 }

@@ -6,13 +6,22 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
+<<<<<<< HEAD
   included_files = ["server/routes/**/*"]
+=======
+  external_node_modules = ["express", "mongoose"]
+  included_files = ["server/routes/**"]
+
+[[redirects]]
+  from = "/.netlify/functions/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+>>>>>>> 475bc4e4e88c89463ca693fcee948779b9b79316
 
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api/:splat"
   status = 200
-  force = true
 
 [[redirects]]
   from = "/*"
