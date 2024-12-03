@@ -1,5 +1,8 @@
 export default {
-  // Global page headers
+  // Target: https://go.nuxtjs.dev/config-target
+  target: 'static',
+
+  // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'nuxt2-express',
     htmlAttrs: {
@@ -26,28 +29,46 @@ export default {
   // Auto import components
   components: true,
 
-  // Modules for dev and build
+  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     '@nuxtjs/tailwindcss'
   ],
 
-  // Modules
+  // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios'
   ],
 
-  // Axios module configuration
+  // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: process.env.NODE_ENV === 'production' 
       ? 'https://express-nuxt-2.netlify.app/api'
       : 'http://localhost:3000/api'
   },
 
-  // Server middleware
-  serverMiddleware: [
-    '~/server/index.js'
+  // Build Configuration: https://go.nuxtjs.dev/config-build
+  build: {
+    transpile: [
+      'defu'
+    ]
+  },
+
+  // Server Middleware
+  serverMiddleware: process.env.NODE_ENV === 'production' ? [] : [
+    { path: '/api', handler: '~/server/index.js' }
   ],
 
-  // Build Configuration
-  build: {}
+  // Public runtime config
+  publicRuntimeConfig: {
+    axios: {
+      browserBaseURL: process.env.BROWSER_BASE_URL
+    }
+  },
+
+  // Private runtime config
+  privateRuntimeConfig: {
+    axios: {
+      baseURL: process.env.BASE_URL
+    }
+  }
 }
